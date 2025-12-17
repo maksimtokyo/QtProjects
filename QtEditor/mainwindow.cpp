@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUI(); // тут у меня было время, так что весь create view я еще успел вынести в отдельную функцию
 
-    m_udpsocket->bind(QHostAddress::Any, 0);
+    m_udpsocket->bind(QHostAddress::Any, 12345);
 
 
     // ну простые коннекты

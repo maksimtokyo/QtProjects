@@ -22,11 +22,12 @@ add_executable(QtRunner
     scriptpainter.h scriptpainter.cpp
 )
 
-target_link_libraries(QtRunner PRIVATE
-    Qt5::Core
-    Qt5::Widgets
-    Qt5::Script
-    Qt5::Network
+target_link_libraries(QtRunner
+    PRIVATE
+        Qt5::Core
+        Qt5::Widgets
+        Qt5::Script
+        Qt5::Network
 )
 
 include(GNUInstallDirs)
