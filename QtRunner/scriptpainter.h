@@ -19,6 +19,8 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 public slots:
+
+    // функции который сообственно вызываются в .qs
     void drawFilledCircle(int x, int y, int r, const QString &color);
     void drawCircle(int x, int y, int r, const QString &color, int lineWidth);
     void drawTriangleShape(int x1, int y1,

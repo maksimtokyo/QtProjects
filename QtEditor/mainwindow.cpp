@@ -13,10 +13,12 @@ MainWindow::MainWindow(QWidget *parent)
       m_sendfile(new QPushButton(tr("send file"), m_dialog)),
       m_curfilepath("")
 {
-    setupUI();
+    setupUI(); // тут у меня было время, так что весь create view я еще успел вынести в отдельную функцию
 
     m_udpsocket->bind(QHostAddress::Any, 0);
 
+
+    // ну простые коннекты
     connect(m_loadbutton, &QPushButton::clicked, this, &MainWindow::onLoadButtonClicked);
     connect(m_savebutton, &QPushButton::clicked, this, &MainWindow::onSaveButtonClicked);
     connect(m_sendbutton, &QPushButton::clicked, this, &MainWindow::onSendButtonClicked);
@@ -49,7 +51,7 @@ void MainWindow::setupUI(){
     addressLayout->addWidget(new QLabel("IP Address:", addressGroup), 0, 0);
 
     m_ipEdit->setText("127.0.0.1");
-    m_ipEdit->setPlaceholderText("e.g., 192.168.1.100");
+    m_ipEdit->setPlaceholderText("192.168.1.100");
     addressLayout->addWidget(m_ipEdit, 0, 1);
 
     addressLayout->addWidget(new QLabel("Port:", addressGroup), 1, 0);
@@ -64,6 +66,9 @@ void MainWindow::setupUI(){
     textBrowser->setReadOnly(true);
     mainLayoutt->addWidget(textBrowser);
 
+
+    // получаем возмоные айпишки  доступные
+
     QString ipList = "Available IP addresses:\n";
     foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress::LocalHost) {
@@ -73,10 +78,12 @@ void MainWindow::setupUI(){
     textBrowser->append(ipList);
     mainLayoutt->addWidget(m_sendfile);
 
+    resize(600, 400);
+
 }
 
 
-void MainWindow::onLoadButtonClicked(){
+void MainWindow::onLoadButtonClicked(){ // настройка файл диалога
     QFileDialog dialog(this);
 
     dialog.setFileMode(QFileDialog::AnyFile);
@@ -104,7 +111,7 @@ void MainWindow::onSendButtonClicked(){
 
 }
 
-void MainWindow::onSaveButtonClicked(){
+void MainWindow::onSaveButtonClicked(){ // просто сохрон пути
 
     if (m_curfilepath == ""){
         return;
@@ -143,7 +150,7 @@ void MainWindow::savefile(const QString& path){
     file.close();
 }
 
-void MainWindow::onSendFileButtonClicked(){
+void MainWindow::onSendFileButtonClicked(){ // отправка скрипта
     QString ip =  m_ipEdit->text().trimmed();
     quint16 port = static_cast<quint16>(m_port->value());
 
@@ -157,13 +164,20 @@ void MainWindow::onSendFileButtonClicked(){
 
 
     QByteArray message = m_edittext->toPlainText().toUtf8();
-    qint64 bytesSent = m_udpsocket->writeDatagram(message, address, port);
 
-    if (bytesSent == -1){
-        qDebug() << "Что-то не работает";
 
-    } else{
-        qDebug() << "Все рабоатет";
-        m_dialog->close();
+
+    const int chunkSize = 1024;  // делим файл на чанки, чтобы если что нормально закинуть, так как udp мало
+    for (int i = 0; i < message.size(); i += chunkSize) {
+        QByteArray chunk = message.mid(i, chunkSize);
+        qint64 bytesSent = m_udpsocket->writeDatagram(chunk, address, port);
+        if (bytesSent == -1){
+            qDebug() << "Что-то не работает";
+
+        } else{
+            qDebug() << "Все рабоатет";
+            m_dialog->close();
+        }
     }
+
 }

@@ -27,6 +27,8 @@ ScriptPainter::ScriptPainter(QWidget *parent)
 
 void ScriptPainter::paintEvent(QPaintEvent *event)
 {
+
+    // в первый раз ничего не отрисуется скорее всего, но это не проблема, хотя небольшой костыль получается
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     painter = &p;
@@ -105,6 +107,5 @@ void ScriptPainter::drawLine(int x1, int y1, int x2, int y2,
 
 void ScriptPainter::runscript(QString script){
     engine.evaluate(script);
-
     update();
 }

@@ -28,9 +28,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-
-    void paintEvent(QPaintEvent *event) override;
     void proccesonDatagram(QNetworkDatagram& datagram);
 
 private slots:
@@ -38,6 +35,8 @@ private slots:
     void onReadyRead();
     void onStartListening();
     void onStartScriptClicked();
+    void onClearButtonClicked();
+    void onValueeChanged(int value);
 
 
 
@@ -55,8 +54,13 @@ private:
     quint16 m_port = 12345;
     QHostAddress m_lastSenderAddress;
     quint16 m_lastSenderPort;
-    ScriptPainter *m_scriptpainter;
+    ScriptPainter *m_scriptpainter; // вынес в кастом класс, так как не хотелось наводить шума в основном классе
     QPushButton *m_startscript;
+    QString m_senderIP{""};
+    QPushButton *m_clearbutton;
+    int m_senderPort{-1};
+
+    QSpinBox *m_portSpinBox;
 
 
 };
