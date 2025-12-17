@@ -9,7 +9,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-# Отключаем сообщение о Qt Maintenance Tool
 set(QT_CREATOR_SKIP_MAINTENANCE_TOOL_PROVIDER ON)
 
 find_package(Qt5 5.15 REQUIRED COMPONENTS Core Widgets Script Network)
