@@ -23,6 +23,7 @@
 #include <QLabel>
 #include <QTextBrowser>
 #include <QNetworkInterface>
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
