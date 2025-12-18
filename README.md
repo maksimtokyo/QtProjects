@@ -4,9 +4,13 @@
 <img width="589" height="423" alt="Screenshot 2025-12-18 at 03 18 56" src="https://github.com/user-attachments/assets/b030c5c9-5849-454f-8b01-23ae89601c71" />
 
 load from file manager  - загрузить файл из проводника 
+
 save file - сохранить файл (если файл загружен)
+
 send  - кнопка для отправки файла 
+
 save as - сохранить как 
+
 при нажатия send всплывает dialog
 
 
