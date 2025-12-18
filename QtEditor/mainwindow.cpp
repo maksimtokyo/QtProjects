@@ -4,13 +4,13 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), m_edittext(new QTextEdit(this)),
       m_loadbutton(new QPushButton(tr("Load file from file manager"), this)),
-      m_savebutton(new QPushButton(tr("Save file"), this)),
-      m_sendbutton(new QPushButton(tr("Send button"), this)),
-      m_udpsocket(new QUdpSocket(this)),
       m_dialog(new QDialog(this)),
+      m_savebutton(new QPushButton(tr("Save file"), this)),
+      m_sendbutton(new QPushButton(tr("Send"), this)),
+      m_sendfile(new QPushButton(tr("send file"), m_dialog)),
+      m_udpsocket(new QUdpSocket(this)),
       m_ipEdit(new QLineEdit(this)),
       m_port(new QSpinBox(this)),
-      m_sendfile(new QPushButton(tr("send file"), m_dialog)),
       m_curfilepath("")
 {
     setupUI(); // тут у меня было время, так что весь create view я еще успел вынести в отдельную функцию
@@ -114,7 +114,16 @@ void MainWindow::onSendButtonClicked(){
 void MainWindow::onSaveButtonClicked(){ // просто сохрон пути
 
     if (m_curfilepath == ""){
-        return;
+        QString path = QFileDialog::getSaveFileName(
+            this,
+            tr("Сохранить как"),
+            QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+            tr("Only .qs (*.qs);;Any files (*)")
+        );
+
+        if (path.isEmpty()) return;
+
+        m_curfilepath = path;
     }
 
     savefile(m_curfilepath);

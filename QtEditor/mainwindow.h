@@ -46,14 +46,15 @@ private:
     void savefile(const QString& path);
 
     QTextEdit *m_edittext;
+    QDialog *m_dialog;
     QPushButton *m_loadbutton;
     QPushButton *m_savebutton;
     QPushButton *m_sendbutton;
-    QUdpSocket *m_udpsocket;
-    QDialog *m_dialog;
-    QString m_curfilepath;
-    QSpinBox  *m_port;
-    QLineEdit *m_ipEdit;
     QPushButton *m_sendfile;
+    QUdpSocket *m_udpsocket;
+    QLineEdit *m_ipEdit;
+    QSpinBox  *m_port;
+
+    QString m_curfilepath;
 };
 #endif // MAINWINDOW_H
